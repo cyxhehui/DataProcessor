@@ -20,6 +20,6 @@ from app.base_views import *
 urlpatterns = [
     url(r'^', include('app.urls')),
 
-    url(r'^process/', include('app.urls', namespace='processresult')),
+    #url(r'^process/', include('app.urls', namespace='processresult')),
 
 ]

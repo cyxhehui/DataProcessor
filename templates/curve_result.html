@@ -1,0 +1,14 @@
+{% extends "base_data_manage.html" %}
+{% load staticfiles %}
+
+{% block js-content %}
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/angular.min.js' %}"></script>
+<script src="{% static 'js/angular-ui-router.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
+<script src="{% static 'js/controller.js' %}"></script>
+{% endblock %}
+
+{% block mainbody %}
+<div ng-controller="curveCtrl" id="img-content"></div>
+{% endblock %}

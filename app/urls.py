@@ -11,8 +11,10 @@ urlpatterns = [
     url(r'^api/compute_cv', base_view.compute_cv, name='compute_cv'),
     url(r'^api/compute_error', base_view.compute_error, name='compute_error'),
     url(r'^api/save', base_view.save, name='save'),
-    url(r'^api/show_curve_result', base_view.show_curve_result, name='show_curve_result'),
 
-    # 处理结果相关
+    # 处理curve结果相关
     url(r'^curve_result.html$', base_view.show_curve_result, name='show_curve_result'),
+
+    # 处理cv结果相关
+    url(r'^cv_result.html$', base_view.show_cv_result, name='show_cv_result'),
 ]

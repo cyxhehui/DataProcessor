@@ -1,11 +1,49 @@
 /**
  * Created by hzhehui on 3/9/2016.
  */
+//var app = angular.module('Hello', []);
+app.controller('cvController', function ($scope, $http) {
+
+});
+
+app.controller('curveCtrl', function ($scope, $http) {
+
+    console.log($scope.$parent);
+    var request = $http({
+        method:'GET',
+        url:'api/curve_fit',
+        params:{'isall':true}
+    });
+
+    var htmlstr = "";
+    request.success(function (data, status, headers, config) {
+            if(data.code == 1) {
+                    console.log(data.data.curveimage);
+                    //htmlstr = "<img src=\"{% static 'images/logistic.png' %}\"  alt=\"拟合结果\" />";
+                    htmlstr = "<tr><td></td><td></td><td>拟合失败,无可用曲线图</td></tr>";
+
+                    var div = document.getElementById("img-content");
+                    var img = document.createElement('img');
+                    img.setAttribute("style", "text-align:center");
+                    img.src = "static/images/logistic.png";
+                    div.appendChild(img);
+                }
+                else if(data.code == 0){
+                    console.log('error_code:' +  data.code + ' msg: ' + data.msg);
+                    htmlstr = "<tr><td></td><td></td><td>拟合失败,无可用曲线图</td></tr>";
+                }
+        })
+        .error(function (data, status, headers, config) {
+
+        });
+
+
+
+    //$("#img-content").html(htmlstr);
+});
 
 app.controller('helloCtrl', function($scope, $http){
-
-    $scope.name = "hehui";
-
+    
     $scope.dataSources = ['NE', 'DA'];
     $scope.selectedDataSource = 'DA';
     $scope.changeDataSource = function () {
@@ -83,7 +121,7 @@ app.controller('helloCtrl', function($scope, $http){
             });
 
     };
-    
+
     $scope.loadRealx = function () {
 
         console.log('load real x');
@@ -128,45 +166,39 @@ app.controller('helloCtrl', function($scope, $http){
 
         var request = $http({
             method:'GET',
-            url:'show_curve.html/',
+            url:'show_curve_result.html',
             params:{'selecteditems': angular.toJson(selected_array)}
         });
 
+        var htmlstr = "";
         request.success(function (data, status, headers, config) {
                 console.log('status:' + status + 'msg: ' + data.msg);
                 if(data.code == 1) {
-                    console.log('status :' + status + 'msg: ' + data.msg);
-                    console.log('image:' + data.data.curveimage);
-                    $http({
-                        method:'GET',
-                        url:'api/show_curve_result',
-                        params:{'curveimage':data.data.curveimage}
-                    }).success(function (data, status, headers, config) {
-
-                    }).error(function (data, status, headers, config) {
-
-                    })
+                    htmlstr = "<img src=\"{% static 'images/logistic.png' %}\"  alt=\"拟合结果\" />"
                 }
                 else if(data.code == 0){
                     console.log('error_code:' +  data.code + ' msg: ' + data.msg);
+                    htmlstr = "<tr><td></td><td></td><td>拟合失败,无可用曲线图</td></tr>";
                 }
 
             })
             .error(function (data, status, headers, config) {
                 console.log('error_code:' + data.code  + ' msg: ' + data.msg);
             })
+
+         $("#image-content").html(htmlstr);
     };
-    
+
     $scope.computeCV = function () {
-        
+
     };
-    
+
     $scope.computeError = function () {
-        
+
     };
-    
+
     $scope.save = function () {
 
     };
-    
+
 });

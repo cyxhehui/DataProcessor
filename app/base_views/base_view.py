@@ -60,8 +60,8 @@ def load_real_x(request):
 
 
 def curve_fit(request):
-    selected_array = json.loads(request.GET['selecteditems'])
-    curve_result = easyDataProcessor.curve_fit(selected_array)
+    is_select_all = json.loads(request.GET['isall'])
+    curve_result = easyDataProcessor.curve_fit(is_select_all)
     if os.path.exists(curve_result):
         json_response_data = {'code': 1, 'msg': '拟合成功', 'data':{
             'curveimage': curve_result
@@ -73,7 +73,11 @@ def curve_fit(request):
 
 
 def show_curve_result(request):
-    return render_to_response('test.html')
+    return render_to_response('curve_result.html')
+
+
+def show_cv_result(request):
+    return render_to_response('cv_result.html')
 
 def compute_cv(request):
     pass
@@ -85,4 +89,5 @@ def compute_error(request):
 
 def save(request):
     pass
+
 

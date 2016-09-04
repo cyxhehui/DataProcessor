@@ -538,8 +538,8 @@ table th {
 }
 .mian_data_src {
 	height: 26px;
-	width: 50px;
-	background: url(../images/icon_01.gif) 0 -88px no-repeat;
+	width: 60px;
+	/*background: url(../images/icon_01.gif) 0 -88px no-repeat;*/
 	float: left;
 	margin: 5px;
 	margin-top: 12px;
@@ -559,18 +559,22 @@ table th {
 
 .mian_data_process {
 	height: 26px;
-	width: 50px;
-	background: url(../images/icon_01.gif) 0 -88px no-repeat;
+	width: 60px;
+	/*background: url(../images/icon_01.gif) 0 -88px no-repeat;*/
 	float: left;
 	margin-left: 25px;
 	margin-top: 12px;
 }
 
+.curveImg{
+	margin:auto;
+}
+
 .main_data_result_about{
 
 	height: 26px;
-	width: 50px;
-	background: url(../images/icon_01.gif) 0 -88px no-repeat;
+	width: 80px;
+	/*background: url(../images/icon_01.gif) 0 -88px no-repeat;*/
 	float: right;
 	margin-right: 5px;
 	margin-top: 12px;

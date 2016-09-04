@@ -65,16 +65,12 @@ class EasyProccessor():
     '''
     slot filed
     '''
-    def curve_fit(self, selected_array):
-        #make sure array_x & array_y not empty
-        #if (len(self.array_x_real) == 0) or (len(self.array_y_real) == 0):
-        #    result = QMessageBox.about(self.detailTable, 'Error', '请先选择数据集')
-        #    return
+    def curve_fit(self, is_all):
 
         self.array_x_real = []
         self.array_y_real = []
 
-        for index in selected_array:
+        for index in range(0, len(self.dataItems)):
             self.array_x_real.append(float(self.dataItems[index]['x_real']))
             self.array_y_real.append(float(self.dataItems[index]['t_xinhao']))
 
