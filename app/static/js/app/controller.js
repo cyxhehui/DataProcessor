@@ -42,8 +42,8 @@ app.controller('curveCtrl', function ($scope, $http) {
     //$("#img-content").html(htmlstr);
 });
 
-app.controller('helloCtrl', function($scope, $http){
-    
+app.controller('helloCtrl', ['$scope', '$http', 'DataService', function($scope, $http, dataService){
+
     $scope.dataSources = ['NE', 'DA'];
     $scope.selectedDataSource = 'DA';
     $scope.changeDataSource = function () {
@@ -98,28 +98,8 @@ app.controller('helloCtrl', function($scope, $http){
     // re-process data and show in table
     // for DA, no need to open fileDialog, but for NE, need to do that ,and let user choose the dir
     $scope.dataLoad = function () {
-        console.log("load data");
-        var params;
-        if ($scope.selectedDataSource == 'DA'){
-            params = {'datasource': 'DA', 'path': "/Users/hzhehui/Downloads/process_data_result/DA"};
-        }
-        else if($scope.selectedDataSource == 'NE'){
-            params = {'datasource': 'NE', 'path': "/Users/hzhehui/Downloads/process_data_result/NE"};
-        }
 
-        var request = $http({
-                method:'GET',
-                url:'api/data_load',
-                params: params,
-            });
-
-        request.success(function (data, status, headers, config) {
-                $scope.dataItems = data.data.items;
-            })
-            .error(function (data, status, header, config) {
-                console.log("error: " + status)
-            });
-
+        dataService.dataLoad($scope.selectedDataSource);
     };
 
     $scope.loadRealx = function () {
@@ -201,4 +181,15 @@ app.controller('helloCtrl', function($scope, $http){
 
     };
 
-});
+    /*************listener for events****************/
+    dataService.registerListener('helloCtrl', "dataLoadFinish", function () {
+        $scope.dataItems = dataService.getDataItems();
+    });
+
+
+    $scope.$on('$destroy', function () {
+       dataService.unregisterListener(helloCtrl);
+    });
+    /***************init code***************/
+    $scope.dataItems = dataService.getDataItems();
+}]);

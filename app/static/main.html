@@ -1,4 +1,4 @@
-{% block mainbody %}
+
 <div class="mian_b">
 <div class="mian_b1">
     <div class="mian_data_src">实验数据源</div>
@@ -6,12 +6,12 @@
         <select ng-model="selectedDataSource" data-ng-change="changeDataSource()" data-ng-options="item for item in dataSources">
         </select>
     </div>
-    {% csrf_token %}
     <a class="mian_data_process" ng-click="preprocessData()">数据预处理</a>
     <a class="mian_data_process" ng-click="dataLoad()">数据加载</a>
     <a class="main_data_result_about" ng-click="save()">保存</a>
     <a class="main_data_result_about" ng-click="computeCV()">CV</a>
-    <a class="main_data_result_about" href="{% url 'show_curve_result' %}">拟合</a>
+    <!--a class="main_data_result_about" href="{% url 'show_curve_result' %}">拟合</a-->
+    <a class="main_data_result_about" ui-sref="curve">拟合</a>
     <a class="main_data_result_about" ng-click="loadRealx()">导入真实浓度</a>
 </div>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="mian_b_bg">
@@ -29,7 +29,6 @@
     <td width="8%" class="mian_b_bg_lm"><span></span>x计算浓度</td>
     <td class="mian_b_bg_lm"><span></span>误差</td>
 </tr>
-{%  verbatim %}
 <tr ng-repeat="dataItem in dataItems">
     <td><input type="checkbox" ng-show="hasData" ng-model="dataItem.isSelected" ng-checked="isSelectAll">{{ dataItem.file_name }}</td>
     <td>{{ dataItem.c_location }}</td>
@@ -44,7 +43,5 @@
     <td>{{ dataItem.x_compute }}</td>
     <td>{{ dataItem.x_error }}</td>
 </tr>
-{%  endverbatim %}
 </table>
 </div>
-{% endblock %}

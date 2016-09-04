@@ -77,7 +77,7 @@ def show_curve_result(request):
 
 
 def show_cv_result(request):
-    return render_to_response('cv_result.html')
+    return render_to_response('../static/test.html')
 
 def compute_cv(request):
     pass
