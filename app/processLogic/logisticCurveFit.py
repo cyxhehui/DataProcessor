@@ -5,8 +5,10 @@ from scipy.optimize import leastsq
 import pandas as pd
 import math
 
+from app.processLogic.cvDataModel import *
 from app.processLogic.ExcelProcessor import ExcelProcessor
 import os
+
 
 class LogisticCurveFit:
     def __init__(self):
@@ -63,6 +65,8 @@ class LogisticCurveFit:
         return x_classify
 
     def compute_cv(self, save_path):
+        cv_results = []
+
         excelProcessor = ExcelProcessor()
         df = pd.DataFrame({'x': self.array_x, 'y': self.array_y})
         grouped = df['y'].groupby(df['x'])
@@ -76,25 +80,31 @@ class LogisticCurveFit:
             array_y = y.values
             for index in range(0, length):
                 x_classify.append(x)
-                y_classify.append(array_y[index])
+                y_classify.append(float("%.5f" % array_y[index]))
 
             start += length
             cv_info = []
             x_classify_sub = x_classify[start - length : start]
             y_classify_sub = y_classify[start - length : start]
             cv_info.append(start)
-            cv_info.append(np.mean(y_classify_sub))
+            cv_info.append(float("%.5f" % np.mean(y_classify_sub)))
             #cv_info.append(100 * np.std(y_classify_sub)/np.mean(y_classify_sub) )
             stdev = 0
             for i in range (0, len(y_classify_sub)):
                 stdev += (y_classify_sub[i] - cv_info[1])**2
             stdev_val = (stdev /(len(y_classify_sub) - 1))**(0.5) / cv_info[1]
-            cv_info.append(stdev_val)
+            cv_info.append(float("%.5f" % stdev_val))
+
+            cv_results_part = CVDataModel().generate_cv_data(x_classify_sub, y_classify_sub, cv_info)
+            for item in cv_results_part:
+                cv_results.append(item)
+
             print(stdev_val)
 
             excelProcessor.write_cv_info(sheet, start - length + 1, x_classify_sub, y_classify_sub, cv_info)
 
         excelProcessor.save_book(save_path)
+        return cv_results
 
     def logistic4(self, x, A, B, C, D):
         """4PL lgoistic equation."""

@@ -84,8 +84,42 @@ def compute_cv(request):
 
 
 def compute_error(request):
-    pass
+    id = int(request.GET['id'])
+    x_compute, x_error = easyDataProcessor.compute_error(id)
+    json_response_data = {'code': 1, 'msg': '误差计算成功', 'data': {
+        'x_compute': x_compute,
+        'x_error': x_error,
+    }}
+    return HttpResponse(json.dumps(json_response_data))
 
+def compute_multiple_error(request):
+    compute_error_array = json.loads(request.GET['idArray'])
+    compute_results = []
+    for id in compute_error_array:
+        x_compute, x_error = easyDataProcessor.compute_error(id)
+        result_item = {'id': id, 'x_compute': x_compute, 'x_error': x_error}
+        compute_results.append(result_item)
+
+    json_response_data = {'code': 1, 'msg': '误差计算成功', 'data': {
+        'compute_results': compute_results,
+    }}
+
+    print(json_response_data)
+    return HttpResponse(json.dumps(json_response_data))
+
+def compute_cv(request):
+
+    cv_results = easyDataProcessor.cv_compute()
+
+    if len(cv_results) == 0:
+        json_response_data = {'code':0, 'msg': '没有数据'}
+    else:
+        json_response_data = {'code': 1, 'msg': 'cv计算成功', 'data':{
+            'cv_results': cv_results,
+        }}
+
+    print(json_response_data)
+    return HttpResponse(json.dumps(json_response_data))
 
 def save(request):
     pass

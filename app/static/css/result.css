@@ -1,0 +1,89 @@
+/** 设置统计图表box样式*/
+.toolBar {
+    position: absolute;
+    z-index: 2;
+    right: 20px;
+    top: 75px
+}
+.blkUnit {
+    position: relative;
+    margin: 25px auto;
+    background-color: #fff;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #444;
+}
+
+.blkUnit .titlBar {
+    z-index: 4;
+    position: relative;
+    height: 16px;
+    padding: 20px;
+    background-color: #f6f6f6
+}
+
+.titlBar h4 {
+    display: inline-block;
+    margin-top: -5px;
+    padding-right: 35px;
+    font-size: 15px;
+    color: #666;
+    *display: inline
+}
+
+.titlBar .compInfo {
+    padding-right: 15px;
+    color: #858585
+}
+
+.box-toolbar {
+    /*position: absolute;*/
+    /*z-index: 2;*/
+    /*right: 20px;*/
+    /*top: 60px*/
+    float: right;
+    margin-top: 8px;
+}
+
+
+.box-toolbar .chartselect {
+    text-decoration: none;
+    color: #666
+}
+
+.chartselect {
+    padding: 0 10px;
+    height: 17px;
+    border: 1px solid #e1e1e1;
+    background: #fff;
+    float: left;
+    margin-left: -1px;
+    line-height: 18px;
+    overflow: hidden;
+    text-align: center
+}
+
+.intrtUnit {
+    position: relative
+}
+
+.intrtUnit .R_paper {
+    /*height: 530px*/
+    background: #ffffff;
+    border-top: 1px solid #cccccc;
+}
+
+.curveImg{
+    position: relative;
+    padding: 0 10px;
+    margin-left: -10px;
+    width: 90%;
+    float:left;
+}
+
+.table-search {
+    width: 100%;
+    max-width: 100%;
+    /*margin-bottom: 20px*/
+}

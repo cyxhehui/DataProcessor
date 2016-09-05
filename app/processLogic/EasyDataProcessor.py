@@ -97,12 +97,37 @@ class EasyProccessor():
 
         file = open(result_file_path)
         dataItems = []
+        index = 0
         for line in file:
             #dataItem = DataModel().generate_from_stringline(line)
+            index += 1
             dataItem = DataModel().generate_json_from_stringline(line)
+            dataItem['id'] = index
             self.dataItems.append(dataItem)
 
         return self.dataItems
+
+    def compute_error(self, dataId):
+        print(dataId)
+        x_real = float(self.dataItems[dataId - 1]['x_real'])
+        y_real = float(self.dataItems[dataId - 1]['t_xinhao'])
+        x_compute, x_error = self.logisticCurveFit.compute_error(x_real, y_real)
+        if math.isnan(x_compute) or math.isnan(x_error):
+            x_compute = 'nan'
+            x_error = 'nan'
+        self.dataItems[dataId - 1]['x_compute'] = x_compute
+        self.dataItems[dataId - 1]['x_error'] = x_error
+        return x_compute, x_error
+
+    def cv_compute(self):
+        # if self.expirement_group == "NE":
+        #     save_path = '%s/data/result/cv_info.xls' % self.ne_root_path
+        # elif self.expirement_group == 'DA':
+        #     save_path = '%s/data/result/cv_info.xls' % self.da_root_path
+        save_path = '%s/data/result/logistic.png' % '/Users/hzhehui/Downloads/process_data_result/DA'
+        cv_results = self.logisticCurveFit.compute_cv(save_path)
+        return cv_results
+
 
 
 

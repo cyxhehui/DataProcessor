@@ -3,6 +3,7 @@
 class DataModel:
 
     def __init__(self):
+        self.id = 0
         self.file_name = ""
         self.c_location = ""
         self.t_locaation = ""
@@ -15,7 +16,9 @@ class DataModel:
         self.x_real = ""
         self.x_compute = ""
         self.x_error = ""
-        self.isSelected = False
+        self.isSelectedForCurve = False
+        self.isSelectedForCompErr = False
+        self.hasComputed = False
         pass
 
 
@@ -55,7 +58,8 @@ class DataModel:
             print(dat_file)
             pieces[0] = dat_file
             print(pieces[0])
-            temp = {'file_name': pieces[0],
+            temp = {'id': 0,
+                    'file_name': pieces[0],
                     'c_location': pieces[1],
                     't_location': pieces[2],
                     'c_huidu': pieces[3],
@@ -67,7 +71,9 @@ class DataModel:
                     'x_real': '',
                     'x_compute': '',
                     'x_error': '',
-                    'isSelected': False}
+                    'isSelectedForCurve': False,
+                    'isSelectedForCompErr': False,
+                    'hasComputed': False}
 
             return temp
         else:

@@ -1,1 +1,61 @@
-<div ng-controller="curveCtrl" id="img-content"></div>
+
+<div ng-controller="curveCtrl" class="blkUnit grpUnit intrtUnit" style="width:49%; float:left;">
+    <div class="titlBar" style="padding-bottom:16px;text-align: left">
+        <h4>拟合曲线</h4>
+    </div>
+
+    <div class="R_paper clearfix range-box" style="padding: 20px" id="img-content">
+        <img class="curveImg" ng-show="showImage" ng-src="{{ imgSrc }}">
+    </div>
+</div>
+
+
+
+<div ng-controller="cvCtrl" class="blkUnit grpUnit intrtUnit" style="width:49%; float:right;">
+            <div class="titlBar" style="padding-bottom:16px;text-align: left">
+                <h4>CV结果</h4>
+            </div>
+            <style>
+                .box-item {
+                    width: 49%;
+                    display: inline-block;
+                    padding: 25px 0px;
+                    margin-top: 40px;
+                    margin-bottom: 60px;
+                }
+
+                .divider-right {
+                   border-right: 1px solid #ccc;
+                }
+
+                .num {
+                    font-size: 33px;
+                    font-weight: 100;
+                     color: #00BDFF;
+                    font-family: "Microsoft Yahei";
+                }
+
+            </style>
+
+            <div class="R_paper clearfix type-box" style="padding: 20px;height: 450px">
+                <table class="table-search">
+                    <tr>
+                        <th>X</th>
+                        <th>Y-反应值</th>
+                        <th>Y-平均值</th>
+                        <th>CV(%)</th>
+                        <th>Y-计算值</th>
+                        <th>Y-残差</th>
+                    </tr>
+                    <tr ng-repeat="cvItem in cvResults">
+                        <td style="text-align: center">{{ cvItem.x_real }}</td>
+                        <td style="text-align: center">{{ cvItem.y_real }}</td>
+                        <td style="text-align: center">{{ cvItem.y_mean }}</td>
+                        <td style="text-align: center">{{ cvItem.cv }}</td>
+                        <td style="text-align: center">{{ cvItem.y_compute }}</td>
+                        <td style="text-align: center">{{ cvItem.y_error }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+</div>

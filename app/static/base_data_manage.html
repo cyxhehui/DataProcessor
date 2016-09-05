@@ -2,8 +2,10 @@
 {% load staticfiles %}
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>无标题页</title>
+<title>实验数据处理</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/result.css' %}">
 </head>
 <body class="main_bj" ng-app="Hello" ng-controller="helloCtrl">    <!--ng-app 指向你的app名  ng-controller指向你的controller名-->
 <div class="mian_top_01">
@@ -11,16 +13,17 @@
     <div class="mian_top_l"></div>
     <div class="mian_top_c">
         <ul>
-            <li><a><p>未完成的任务</p></a></li>
+            <li><a><p style="text-align: center">数据处理</p></a></li>
         </ul>
     </div>
 </div>
-<div ui-view></div>
+<div class="container" ui-view></div>
 </body>
 </html>
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/angular.min.js' %}"></script>
 <script src="{% static 'js/angular-ui-router.js' %}"></script>
+<script src="{% static 'js/app/Constants.js' %}"></script>
 <script src="{% static 'js/app/app.js' %}"></script>
 <script src="{% static 'js/app/DataService.js' %}"></script>
 <script src="{% static 'js/app/controller.js' %}"></script>

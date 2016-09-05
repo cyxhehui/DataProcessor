@@ -11,6 +11,14 @@ body {
 	color: 3c3c3c;
 }
 
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 100px;
+    /*padding-top: 1px;*/
+    width: 100%;
+}
+
 html,body {
 	height: 99%;
 }
@@ -567,7 +575,7 @@ table th {
 }
 
 .curveImg{
-	margin:auto;
+	text-align: center;
 }
 
 .main_data_result_about{
@@ -664,6 +672,15 @@ table th {
 .mian_b_bg_xz tr td {
 	padding-left: 5px;
 	color: #404040;
+}
+
+.computeError{
+	width: 15px;
+	height: 15px;
+	text-align: center;
+	margin-left: 5px;
+	margin-bottom: 10px;
+
 }
 
 .bnt_01 {

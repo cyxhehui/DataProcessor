@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^api/curve_fit', base_view.curve_fit, name='curve_fit'),
     url(r'^api/compute_cv', base_view.compute_cv, name='compute_cv'),
     url(r'^api/compute_error', base_view.compute_error, name='compute_error'),
+    url(r'^api/compute_multiple_error', base_view.compute_multiple_error, name='compute_multiple_error'),
     url(r'^api/save', base_view.save, name='save'),
 
     # 处理curve结果相关

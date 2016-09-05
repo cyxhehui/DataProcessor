@@ -2,11 +2,26 @@
  * Created by hzhehui on 3/9/2016.
  */
 //var app = angular.module('Hello', []);
-app.controller('cvController', function ($scope, $http) {
+app.controller('cvCtrl', ['$scope', '$http', 'DataService', function($scope, $http, dataService){
+    $scope.cvResults = [];
 
-});
+    dataService.computeCV();
+
+    dataService.registerListener('cvCtrl', 'eventComputeCVFinished', function () {
+        $scope.cvResults = dataService.getCvResults();
+    });
+
+
+    $scope.$on('$destroy', function () {
+       dataService.unregisterListener(cvCtrl);
+    });
+    /***************init code***************/
+    $scope.cvResults = dataService.getCvResults();
+}]);
 
 app.controller('curveCtrl', function ($scope, $http) {
+
+    $scope.showImage = false;
 
     console.log($scope.$parent);
     var request = $http({
@@ -15,18 +30,13 @@ app.controller('curveCtrl', function ($scope, $http) {
         params:{'isall':true}
     });
 
+    $scope.showImage = true;
+    $scope.imgSrc = "static/images/logistic.png";
     var htmlstr = "";
     request.success(function (data, status, headers, config) {
             if(data.code == 1) {
-                    console.log(data.data.curveimage);
-                    //htmlstr = "<img src=\"{% static 'images/logistic.png' %}\"  alt=\"拟合结果\" />";
-                    htmlstr = "<tr><td></td><td></td><td>拟合失败,无可用曲线图</td></tr>";
-
-                    var div = document.getElementById("img-content");
-                    var img = document.createElement('img');
-                    img.setAttribute("style", "text-align:center");
-                    img.src = "static/images/logistic.png";
-                    div.appendChild(img);
+                    $scope.showImage = true;
+                    $scope.imageSrc = "static/images/logistic.png";
                 }
                 else if(data.code == 0){
                     console.log('error_code:' +  data.code + ' msg: ' + data.msg);
@@ -37,15 +47,16 @@ app.controller('curveCtrl', function ($scope, $http) {
 
         });
 
-
-
-    //$("#img-content").html(htmlstr);
 });
 
 app.controller('helloCtrl', ['$scope', '$http', 'DataService', function($scope, $http, dataService){
 
     $scope.dataSources = ['NE', 'DA'];
     $scope.selectedDataSource = 'DA';
+    $scope.isComputedError = false;
+    $scope.isSelectAll = false;
+    $scope.isComputeErrorAll = false;
+
     $scope.changeDataSource = function () {
         $scope.selectedDataSource = this.selectedDataSource;
         console.log("select source:" + $scope.selectedDataSource);
@@ -56,21 +67,39 @@ app.controller('helloCtrl', ['$scope', '$http', 'DataService', function($scope, 
             return true;
         else
             return false;
-    }
+    };
 
-    $scope.selectAll = function () {
+    $scope.selectAll = function (isSelectall) {
         if($scope.dataItems){
 
-            if($scope.isSelectAll){
+            if(isSelectall){
                 console.log("ts");
                 for(var i = 0; i < $scope.dataItems.length; i++){
-                    $scope.dataItems[i].isSelected = true;
+                    $scope.dataItems[i].isSelectedForCurve = true;
                 }
             }
             else{
                 console.log("ts1");
                 for(var i = 0; i < $scope.dataItems.length; i++){
-                    $scope.dataItems[i].isSelected = false;
+                    $scope.dataItems[i].isSelectedForCurve = false;
+                }
+            }
+        }
+    };
+
+    $scope.computeErrAllCheckOrUncheck = function (isComputeErrorAll) {
+
+        if($scope.dataItems){
+
+            if(isComputeErrorAll){
+                for(var i = 0; i < $scope.dataItems.length; i++){
+                    $scope.dataItems[i].isSelectedForCompErr = true;
+                }
+            }
+            else{
+                console.log("ts1");
+                for(var i = 0; i < $scope.dataItems.length; i++){
+                    $scope.dataItems[i].isSelectedForCompErr = false;
                 }
             }
         }
@@ -104,26 +133,7 @@ app.controller('helloCtrl', ['$scope', '$http', 'DataService', function($scope, 
 
     $scope.loadRealx = function () {
 
-        console.log('load real x');
-
-        var request = $http({
-            method:'GET',
-            url:'api/load_real_x',
-            params: {'xpath': '/Users/hzhehui/Downloads/process_data_result/DA/X.txt'}
-        });
-
-        request.success(function (data, status, headers, config) {
-                if(data.code == 1) {
-                    $scope.dataItems = data.data.items;
-                    console.log('status :' + status + 'msg: ' + data.msg);
-                }
-                else if(data.code == 0){
-                    console.log('error_code:' +  data.code + ' msg: ' + data.msg);
-                }
-            })
-            .error(function (data, status, headers, config) {
-
-            })
+        dataService.loadRealx();
     };
 
     $scope.curveFit = function () {
@@ -131,12 +141,12 @@ app.controller('helloCtrl', ['$scope', '$http', 'DataService', function($scope, 
         var selected_array = [];
         var i = 0;
         for(i = 0; i < $scope.dataItems.length; i++){
-            if($scope.dataItems[i].isSelected){
+            if($scope.dataItems[i].isSelectedForCurve){
                 selected_array.push(i);
             }
         }
-        console.log(selected_array);
-        console.log(angular.fromJson($scope.dataItems));
+        //console.log(selected_array);
+        //console.log(angular.fromJson($scope.dataItems));
 
         if(selected_array.length == 0){
 
@@ -173,8 +183,18 @@ app.controller('helloCtrl', ['$scope', '$http', 'DataService', function($scope, 
 
     };
 
-    $scope.computeError = function () {
+    $scope.computeError = function (id) {
+        $scope.dataItems[id - 1]['hasComputed'] = true;
+        dataService.computeError(id);
+    };
 
+    $scope.computeMultipleXError = function () {
+        var computeErrorArray = []
+        for (var i = 0 ; i < $scope.dataItems.length; i++){
+            if($scope.dataItems[i]['isSelectedForCompErr'])
+                computeErrorArray.push($scope.dataItems[i]['id']);
+        }
+        dataService.computeMultipleXError(computeErrorArray);
     };
 
     $scope.save = function () {
@@ -182,7 +202,15 @@ app.controller('helloCtrl', ['$scope', '$http', 'DataService', function($scope, 
     };
 
     /*************listener for events****************/
-    dataService.registerListener('helloCtrl', "dataLoadFinish", function () {
+    dataService.registerListener('helloCtrl', 'eventDataLoadFinished', function () {
+        $scope.dataItems = dataService.getDataItems();
+    });
+
+    dataService.registerListener('helloCtrl', 'eventRealxLoadFinished', function () {
+        $scope.dataItems = dataService.getDataItems();
+    });
+
+    dataService.registerListener('helloCtrl', 'eventComputeMultipleErrorFinished', function () {
         $scope.dataItems = dataService.getDataItems();
     });
 
